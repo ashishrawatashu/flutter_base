@@ -2,16 +2,20 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_base/Utils/bottom_bar.dart';
 
 import '../Utils/app_constants.dart';
 import '../Utils/colors_code.dart';
 import '../Utils/hex_color.dart';
 import '../Utils/my_routes.dart';
+import '../Utils/navdrawer.dart';
+import '../Utils/show.dart';
 import 'bottomsTabs/history_tab.dart';
 import 'bottomsTabs/home_tab.dart';
 import 'bottomsTabs/wallet_tab.dart';
 
 class DashBoard extends StatefulWidget {
+
   const DashBoard({Key? key}) : super(key: key);
 
   @override
@@ -52,63 +56,17 @@ class _DashBoardState extends State<DashBoard> {
       onWillPop: onWillPop,
       child: Scaffold(
         // endDrawerEnableOpenDragGesture: true,
-        // endDrawer: NavigationDrawer(),
+        drawer: NavDrawer(),
         // backgroundColor: HexColor(MyColors.primaryColor),
-        bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: HexColor(MyColors.primaryColor),
-          backgroundColor: Colors.white,
-          selectedLabelStyle: TextStyle(color: HexColor(MyColors.primaryColor)),
-          unselectedItemColor: Colors.blueGrey,
-          showUnselectedLabels: true,
-          type: BottomNavigationBarType.fixed,
-          currentIndex: AppConstants.index,
-          unselectedFontSize: 10,
-          selectedFontSize: 12,
-          onTap: (int index) async {
-           setState(() {
-             AppConstants.index = index;
-           });
-            // _navigateToScreens(index);
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.home),
-              backgroundColor: Colors.white,
-              label: "Home",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.list,
-              ),
-              backgroundColor: Colors.white,
-              label: "My History",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.payment,
-              ),
-              backgroundColor: Colors.white,
-              label: "Wallet",
-            ),
-          ],
-        ),
+        bottomNavigationBar: BottomNavBar(onTap:(index){
+          setState(() {
+            AppConstants.index = index;
+          });
+        }),
         body: showScreens(AppConstants.index),
       ),
     );
-
-
-
-
   }
 
-  showScreens(int index) {
-    switch (index) {
-      case 0:
-        return HomeTab();
-      case 1:
-        return HistoryTab();
-      case 2:
-        return WalletTab();
-    }
-  }
+
 }
